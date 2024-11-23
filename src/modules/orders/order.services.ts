@@ -13,6 +13,8 @@ const createiOrderIntoDB = async (orderData: IOrder) => {
     throw new Error('Insufficient quantity');
   }
 
+  const totalPrice = orderData.quantity * existingProduct.price;
+
   const updateProduct = await Product.findOneAndUpdate(
     { _id: orderData.product, quantity: { $gte: orderData.quantity } },
     {
@@ -26,16 +28,40 @@ const createiOrderIntoDB = async (orderData: IOrder) => {
     throw new Error('Failed to update product quantity');
   }
 
+  orderData.totalPrice = totalPrice;
+
   const result = await Order.create(orderData);
   return result;
 };
 
-const getSingleProductFromDB = async () => {
+const totalOrderInDB = async () => {
   const result = await Order.find({});
   return result;
 };
 
+const totalRevenueFromDB = async () => {
+  const result = await Order.aggregate([
+    {
+      $group: {
+        _id: null,
+        totalRevenue: { $sum: '$totalPrice' },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        totalRevenue: 1,
+      },
+    },
+  ]);
+
+  console.log('', result[0]);
+
+  return result[0];
+};
+
 export const orderServices = {
-  getSingleProductFromDB,
+  totalOrderInDB,
   createiOrderIntoDB,
+  totalRevenueFromDB,
 };

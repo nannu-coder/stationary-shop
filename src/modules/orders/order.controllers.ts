@@ -24,13 +24,35 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
-const getSingleOrder = async (req: Request, res: Response) => {
+const totalOrder = async (req: Request, res: Response) => {
   try {
-    const result = await orderServices.getSingleProductFromDB();
+    const result = await orderServices.totalOrderInDB();
 
     res.status(200).json({
       success: true,
-      message: 'order was successfully',
+      message: 'totalOrder Successfully Reteived',
+      data: result,
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+      error: error,
+      // stack
+    });
+  }
+};
+
+const totalRevenue = async (req: Request, res: Response) => {
+  try {
+    const result = await orderServices.totalRevenueFromDB();
+
+    //! Success should be changed with Status
+    res.status(200).json({
+      success: true,
+      message: 'Revenue calculated successfully',
       data: result,
     });
 
@@ -47,5 +69,6 @@ const getSingleOrder = async (req: Request, res: Response) => {
 
 export const orderController = {
   createOrder,
-  getSingleOrder,
+  totalOrder,
+  totalRevenue,
 };

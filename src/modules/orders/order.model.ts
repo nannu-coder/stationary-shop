@@ -18,7 +18,6 @@ const orderSchema = new mongoose.Schema<IOrder>({
   },
   totalPrice: {
     type: Number,
-    required: [true, 'Total price field is required'],
   },
 });
 
