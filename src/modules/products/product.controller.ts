@@ -110,11 +110,22 @@ const deleteProduct = async (req: Request, res: Response) => {
     const { productId } = req.params;
     const result = await productServices.deleteProductFromDB(productId);
 
-    res.status(200).json({
-      success: true,
-      message: 'Product deleted successfully',
-      data: result,
-    });
+    if (result.deletedCount > 0) {
+      // Product successfully deleted
+      return res.status(200).json({
+        success: true,
+        message: 'Product deleted successfully',
+        data: {},
+      });
+    } else {
+      // Product not found
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found',
+        data: {},
+      });
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(error.status || error.statusCode || 500).json({
