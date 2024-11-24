@@ -13,11 +13,14 @@ const createProduct = async (req: Request, res: Response) => {
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    res.status(400).json({
+    res.status(error.status || error.statusCode || 500).json({
       success: false,
       message: error.message,
-      error: error,
-      // stack
+      error: {
+        name: error.name,
+        errors: error.errors,
+      },
+      stack: error.stack,
     });
   }
 };
@@ -25,8 +28,6 @@ const createProduct = async (req: Request, res: Response) => {
 const getAllProducts = async (req: Request, res: Response) => {
   try {
     const searchTerm = req.query;
-
-    // console.log(filter);
 
     const result = await productServices.getAllProductFromDB(searchTerm);
 
@@ -37,11 +38,14 @@ const getAllProducts = async (req: Request, res: Response) => {
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    res.status(400).json({
+    res.status(error.status || error.statusCode || 500).json({
       success: false,
       message: error.message,
-      error: error,
-      // stack
+      error: {
+        name: error.name,
+        errors: error.errors,
+      },
+      stack: error.stack,
     });
   }
 };
@@ -60,11 +64,14 @@ const getSingleProduct = async (req: Request, res: Response) => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    res.status(400).json({
+    res.status(error.status || error.statusCode || 500).json({
       success: false,
       message: error.message,
-      error: error,
-      // stack
+      error: {
+        name: error.name,
+        errors: error.errors,
+      },
+      stack: error.stack,
     });
   }
 };
@@ -86,11 +93,14 @@ const updateProduct = async (req: Request, res: Response) => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    res.status(400).json({
+    res.status(error.status || error.statusCode || 500).json({
       success: false,
       message: error.message,
-      error: error,
-      // stack
+      error: {
+        name: error.name,
+        errors: error.errors,
+      },
+      stack: error.stack,
     });
   }
 };
@@ -107,11 +117,14 @@ const deleteProduct = async (req: Request, res: Response) => {
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    res.status(400).json({
+    res.status(error.status || error.statusCode || 500).json({
       success: false,
       message: error.message,
-      error: error,
-      // stack
+      error: {
+        name: error.name,
+        errors: error.errors,
+      },
+      stack: error.stack,
     });
   }
 };

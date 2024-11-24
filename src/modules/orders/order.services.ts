@@ -1,16 +1,17 @@
 import Product from '../products/product.model';
 import { IOrder } from './order.interface';
 import { Order } from './order.model';
+import createError from 'http-errors';
 
 const createiOrderIntoDB = async (orderData: IOrder) => {
   const existingProduct = await Product.findById(orderData.product);
 
   if (!existingProduct) {
-    throw new Error('Product not found');
+    throw createError(404, 'Product not found');
   }
 
   if (orderData.quantity > existingProduct.quantity) {
-    throw new Error('Insufficient quantity');
+    throw createError(400, 'Insufficient quantity');
   }
 
   const totalPrice = orderData.quantity * existingProduct.price;
@@ -25,10 +26,10 @@ const createiOrderIntoDB = async (orderData: IOrder) => {
   );
 
   if (!updateProduct) {
-    throw new Error('Failed to update product quantity');
+    throw createError(400, 'Failed to update product quantity');
   }
 
-  orderData.totalPrice = totalPrice;
+  orderData.totalPrice = Number(totalPrice.toFixed(2));
 
   const result = await Order.create(orderData);
   return result;
