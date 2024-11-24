@@ -56,8 +56,6 @@ const totalRevenueFromDB = async () => {
     },
   ]);
 
-  console.log('', result[0]);
-
   return result[0];
 };
 
